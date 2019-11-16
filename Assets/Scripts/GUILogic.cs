@@ -27,7 +27,9 @@ public class GUILogic : UIObject, IInitable, IUpdatable
 
         m_MainLogic = main;
         m_MainLogic.GetLevelLogic().AddGameStartListener(GameStart);
-        
+        m_MainLogic.GetLevelLogic().AddLevelStartListener(LevelStart);
+        m_MainLogic.GetLevelLogic().AddTimeIsUpListener(TimeIsUp);
+
         InitWindows();
 
         // Debug.Log("Screen " + Screen.width + " . " + Screen.height);
@@ -63,5 +65,17 @@ public class GUILogic : UIObject, IInitable, IUpdatable
 
     void GameStart(int level){
         OpenWindow(WinViewBase.WinType.Gameplay);
+    }
+
+    void LevelStart(int level){
+        OpenWindow(WinViewBase.WinType.Gameplay);
+    }
+
+    void TimeIsUp(){
+        // time is up 
+
+        Debug.Log("time is up");
+
+        OpenWindow(WinViewBase.WinType.LevelComplete);
     }
 }

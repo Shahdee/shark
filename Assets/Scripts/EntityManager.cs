@@ -12,7 +12,7 @@ public class EntityManager : MonoBehaviour, IInitable
         m_Logic = logic;
     }
 
-    public Object CreateEntity(){
+    public Object CreateEntity(Object.ObjectType oType){
         return null;
     }
 }

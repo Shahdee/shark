@@ -156,7 +156,6 @@ public class MainLogic : MonoBehaviour
     }
 
     public void MoveNext(){
-
         m_LevelLogic.MoveNext(); 
     }
 
