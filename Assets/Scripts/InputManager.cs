@@ -57,24 +57,35 @@ public class InputManager : MonoBehaviour, IUpdatable, IInitable
         
     }
 
-    bool m_TrackInput = false;
-
-    public void TrackInput(bool track){
-        m_TrackInput = track;
-    }
-
     Vector2 m_TouchPos;
     Vector2 m_TouchStartPos;
     Touch m_Touch;
     public void UpdateMe(float deltaTime)
     {
-        if (! m_TrackInput) return;
+        UpdateAxes();
 
 #if UNITY_STANDALONE || UNITY_EDITOR
         UpdateMouse(deltaTime);
 #else
         UpdateTouches(deltaTime);
 #endif
+    }
+
+    float m_Horizontal = 0;
+    float m_Vertical = 0;
+
+    public float GetHorizontal(){
+        return m_Horizontal;
+    }
+
+    public float GetVertical(){
+        return m_Vertical;
+    }
+
+    void UpdateAxes(){
+
+        m_Horizontal = Input.GetAxis("Horizontal");
+        m_Vertical = Input.GetAxis("Vertical");
     }
 
     void UpdateMouse(float deltaTime){

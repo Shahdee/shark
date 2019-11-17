@@ -10,9 +10,26 @@ public class Shark : Object
 {
     public Rigidbody2D m_Rigidbody;
 
-    public float m_MaxVelocity = 3;
-
+    // public float m_MaxVelocity = 3;
     public float m_RotationSpeed = 3;
+    public float m_Velocity = 1;
+
+    public enum MovementType{
+        Slide,
+        ManualRotation,
+        AdaptiveRotation,
+    }
+
+    public MovementType m_MovementType = MovementType.Slide;
+
+
+    InputManager inputManager;
+
+    public override void Init(MainLogic logic){
+
+       inputManager = MainLogic.GetMainLogic().GetInputManager();
+
+    } 
 
 #region Events
 
@@ -49,24 +66,22 @@ public class Shark : Object
 
 #endregion
 
-    float m_yAxis;
-    float m_xAxis;
-    Vector2 m_Force;
+    // float m_yAxis;
+    // float m_xAxis;
+    // Vector2 m_Force;
    
-    void Update ()
-    {
-       m_xAxis = Input.GetAxis("Horizontal");
-       m_yAxis = Input.GetAxis("Vertical");
+    // void Update ()
+    // {
+    // //    m_xAxis = Input.GetAxis("Horizontal");
+    // //    m_yAxis = Input.GetAxis("Vertical");
        
-       ThrustForward(m_yAxis);
-       Rotate(m_xAxis * -m_RotationSpeed);
-    }
+    // //    ThrustForward(m_yAxis);
+    // //    Rotate(m_xAxis * -m_RotationSpeed);
+    // }
 
-    float m_VelocityX;
-    float m_VelocityY;
-
-    Vector2 m_CurrVelocity;
-
+    // float m_VelocityX;
+    // float m_VelocityY;
+    // Vector2 m_CurrVelocity;
    
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -91,30 +106,84 @@ public class Shark : Object
     }
 
 
-#region Movements 
-    void ClampVelocity(){
+#region Movements1 
 
-        m_VelocityX = Mathf.Clamp(m_Rigidbody.velocity.x, -m_MaxVelocity, m_MaxVelocity);
-        m_VelocityY = Mathf.Clamp(m_Rigidbody.velocity.y, -m_MaxVelocity, m_MaxVelocity);
+    // void ClampVelocity(){
 
-        m_CurrVelocity.x = m_VelocityX;
-        m_CurrVelocity.y = m_VelocityY;
+    //     m_VelocityX = Mathf.Clamp(m_Rigidbody.velocity.x, -m_MaxVelocity, m_MaxVelocity);
+    //     m_VelocityY = Mathf.Clamp(m_Rigidbody.velocity.y, -m_MaxVelocity, m_MaxVelocity);
 
-        m_Rigidbody.velocity = m_CurrVelocity;
-    }
+    //     m_CurrVelocity.x = m_VelocityX;
+    //     m_CurrVelocity.y = m_VelocityY;
 
-    void ThrustForward(float amount){
-        m_Force = m_Transform.up * amount;
+    //     m_Rigidbody.velocity = m_CurrVelocity;
+    // }
 
-        m_Rigidbody.AddForce(m_Force);
+    // void ThrustForward(float amount){
+    //     m_Force = m_Transform.up * amount;
 
-        ClampVelocity();
-    }
+    //     m_Rigidbody.AddForce(m_Force);
 
-    void Rotate(float amount){
-        m_Transform.Rotate(0,0, amount);
+    //     ClampVelocity();
+    // }
 
-    }
+    // void Rotate(float amount){
+    //     m_Transform.Rotate(0,0, amount);
+
+    // }
 
 #endregion
+
+
+#region Movements2
+
+    void Update(){  
+        switch(m_MovementType){
+            case MovementType.Slide:
+                UpdateSlide();
+            break;
+
+            case MovementType.ManualRotation:
+                UpdateManualRotation();
+            break;
+
+            case MovementType.AdaptiveRotation:
+                UpdateAdaptiveRotation();
+            break;
+        }
+    }
+
+    void UpdateSlide(){
+        m_Rigidbody.AddForce(inputManager.GetHorizontal() * Vector2.right * m_Velocity * Time.deltaTime); 
+        m_Rigidbody.AddForce(inputManager.GetVertical() * Vector2.up * m_Velocity * Time.deltaTime); 
+    }
+
+    float rotationAmount;
+
+    void UpdateManualRotation(){
+        m_Rigidbody.AddForce(inputManager.GetVertical() * m_Transform.up * m_Velocity * Time.deltaTime);
+        rotationAmount  = m_RotationSpeed * Time.deltaTime * inputManager.GetHorizontal();
+        m_Rigidbody.AddTorque(-rotationAmount, ForceMode2D.Force);
+    }
+
+    Vector2 direction = new Vector2();
+    Vector2 normDirection = new Vector2();
+    float thrust;
+    float rotation;
+
+    void UpdateAdaptiveRotation(){
+        direction.x = inputManager.GetHorizontal();
+        direction.y = inputManager.GetVertical() ;
+        normDirection = direction.normalized;
+
+        thrust = Vector2.Dot(normDirection, m_Transform.up);
+        rotation = Vector2.Dot(normDirection, m_Transform.right);
+
+        m_Rigidbody.AddForce(thrust * direction.magnitude * m_Transform.up * m_Velocity * Time.deltaTime);
+
+        rotationAmount  = m_RotationSpeed * Time.deltaTime * rotation;
+        m_Rigidbody.AddTorque(-rotationAmount, ForceMode2D.Force);
+    }
+
+#endregion 
 }
