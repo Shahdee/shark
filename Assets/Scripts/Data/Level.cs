@@ -105,6 +105,9 @@ public class Level : MonoBehaviour, IInitable
                 if (i == c_Shark_X && y == c_Shark_Y) continue;
                 
                 enemy = UnityEngine.Random.Range(0f, 1f);
+
+                // Debug.Log("enemy range " + enemy);
+
                 if (enemy <= m_EnemyProbability){
                     // put enemy in the cell
 

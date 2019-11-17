@@ -10384,8 +10384,8 @@ MonoBehaviour:
   - {fileID: 1243807305}
   - {fileID: 461904625}
   m_TrsLevelObjects: {fileID: 282952574}
-  m_EnemyProbability: 0.2
-  m_MineProbability: 0.7
+  m_EnemyProbability: 0.1
+  m_MineProbability: 0.3
 --- !u!4 &1464983044
 Transform:
   m_ObjectHideFlags: 0
