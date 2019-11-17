@@ -37,6 +37,8 @@ public class GUILogic : UIObject, IInitable, IUpdatable
         // Debug.Log("scale " + m_RectTransform.localScale);
 
         // m_Scale = m_RectTransform.localScale.x;
+
+        OpenWindow(WinViewBase.WinType.Menu);
     }
 
     void InitWindows(){

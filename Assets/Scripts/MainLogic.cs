@@ -135,8 +135,7 @@ public class MainLogic : MonoBehaviour
         Debug.Log("OnAuthComplete");
 
         // TODO future - get player data 
-
-        StartGame();
+        
     }
 
     public void StartGame(){
