@@ -30,33 +30,33 @@ public class Shark : GObject
 
 #region Events
 
-    UnityAction<Object> m_OnSwimmerCollide;
+    UnityAction<GObject> m_OnSwimmerCollide;
 
-    public void AddSwimmerCollide(UnityAction<Object> listener){
+    public void AddSwimmerCollide(UnityAction<GObject> listener){
         m_OnSwimmerCollide += listener;
     }
 
-    public void RemoveSwimmerCollide(UnityAction<Object> listener){
+    public void RemoveSwimmerCollide(UnityAction<GObject> listener){
         m_OnSwimmerCollide -= listener;
     }
 
-    void OnSwimmerCollide(Object swimmer){
+    void OnSwimmerCollide(GObject swimmer){
 
         if (m_OnSwimmerCollide != null)
             m_OnSwimmerCollide(swimmer);
     }
 
-    UnityAction<Object> m_OnMineCollide;
+    UnityAction<GObject> m_OnMineCollide;
 
-    public void AddMineCollide(UnityAction<Object> listener){
+    public void AddMineCollide(UnityAction<GObject> listener){
         m_OnMineCollide += listener;
     }
 
-    public void RemoveMineCollide(UnityAction<Object> listener){
+    public void RemoveMineCollide(UnityAction<GObject> listener){
         m_OnMineCollide -= listener;
     }
 
-    void OnMineCollide(Object mine){
+    void OnMineCollide(GObject mine){
            if (m_OnMineCollide != null)
             m_OnMineCollide(mine);
     }
@@ -72,6 +72,10 @@ public class Shark : GObject
             return;
         else{
             switch(obj.GetObjType()){
+                 case GObject.ObjectType.SwimmerStatic:
+                    OnSwimmerCollide(obj);
+                break;
+
                 case GObject.ObjectType.Swimmer:
                     OnSwimmerCollide(obj);
                 break;
@@ -101,6 +105,8 @@ public class Shark : GObject
                 UpdateAdaptiveRotation();
             break;
         }
+
+        UpdateCamera();
     }
 
     void UpdateSlide(){
@@ -133,6 +139,19 @@ public class Shark : GObject
 
         rotationAmount  = m_RotationSpeed * Time.deltaTime * rotation;
         m_Rigidbody.AddTorque(-rotationAmount, ForceMode2D.Force);
+    }
+
+    Vector3 m_CameraPos;
+
+    // hacky..
+    void UpdateCamera(){
+
+        m_CameraPos = Camera.main.transform.position;
+        m_CameraPos.x = m_Transform.position.x;
+        m_CameraPos.y = m_Transform.position.y;
+
+        Camera.main.transform.position = m_CameraPos;
+
     }
 
 #endregion 

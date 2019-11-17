@@ -61,7 +61,7 @@ public class Level : MonoBehaviour, IInitable
 
     void PutShark(){
         m_Shark.Put(c_Shark_X, c_Shark_Y);
-        
+
         // camera might be here
     }
 
@@ -81,8 +81,8 @@ public class Level : MonoBehaviour, IInitable
         GenerateEnemies();
     }
 
-    public float m_EnemyProbability = 0.2f;
-    public float m_MineProbability = 0.7f;
+    public float m_EnemyProbability = 0.1f;
+    public float m_MineProbability = 0.3f;
 
     void GenerateEnemies(){
 
@@ -101,11 +101,11 @@ public class Level : MonoBehaviour, IInitable
                 if (i == c_Shark_X && y == c_Shark_Y) continue;
                 
                 enemy = UnityEngine.Random.Range(0f, 1f);
-                if (enemy > m_EnemyProbability){
+                if (enemy <= m_EnemyProbability){
                     // put enemy in the cell
 
                     type = UnityEngine.Random.Range(0f, 1f);
-                    if (type > m_MineProbability)
+                    if (type <= m_MineProbability)
                     {
                         // mine 
                         entity = m_MainLogic.GetEntityManager().GetEntity(GObject.ObjectType.Mine);
@@ -134,6 +134,23 @@ public class Level : MonoBehaviour, IInitable
         m_AllEnemies.Clear();
     }
 
+    void GetRidOfEnemy(GObject enemy){
+
+        int index = GetEnemyIndex(enemy);
+        if (index >= 0){
+            m_AllEnemies.RemoveAt(index);
+        }
+        m_MainLogic.GetEntityManager().ReturnToPool(enemy);
+    }
+
+    int GetEnemyIndex(GObject enemy){
+        for (int i=0; i<m_AllEnemies.Count; i++){
+            if (m_AllEnemies[i] == enemy)
+                return i;
+        }
+        return -1;
+    }
+
     public Shark GetShark(){
         return m_Shark;
     }
@@ -142,27 +159,13 @@ public class Level : MonoBehaviour, IInitable
         return m_Tilemaps[c_Tilemap_Water];
     }
 
-    void MineCollision(Object mine){
-
+    void MineCollision(GObject mine){
         m_MainLogic.GetLevelLogic().AddScore(-1);
-        
-        // what mine 
-        // to remove scores
-        // to remove mine from the screen
-
-        // mine should explore 
-
-        // m_Objects
+        GetRidOfEnemy(mine);
     }
 
-    void SwimmerCollision(Object swimmer){
-
+    void SwimmerCollision(GObject swimmer){
         m_MainLogic.GetLevelLogic().AddScore(1);
-        
-        // what swimmer 
-        // to add scores
-        // to remove swimmer from the screen 
-
-        // m_Objects
+        GetRidOfEnemy(swimmer);
     }
 }

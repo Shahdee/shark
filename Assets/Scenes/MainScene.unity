@@ -3622,7 +3622,7 @@ Tilemap:
   - first: {x: -9, y: -20, z: 0}
     second:
       m_TileIndex: 3
-      m_TileSpriteIndex: 3
+      m_TileSpriteIndex: 6
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -4328,14 +4328,14 @@ Tilemap:
     m_Data: {fileID: 21300018, guid: 25c8645a56cbc2642bd39372f402b956, type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 1
-    m_Data: {fileID: 21300020, guid: 25c8645a56cbc2642bd39372f402b956, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 12
     m_Data: {fileID: 21300016, guid: 25c8645a56cbc2642bd39372f402b956, type: 3}
   - m_RefCount: 12
     m_Data: {fileID: 21300022, guid: 25c8645a56cbc2642bd39372f402b956, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 21300020, guid: 25c8645a56cbc2642bd39372f402b956, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300024, guid: 25c8645a56cbc2642bd39372f402b956, type: 3}
   m_TileMatrixArray:
@@ -4553,7 +4553,7 @@ Camera:
   far clip plane: 100
   field of view: 60
   orthographic: 1
-  orthographic size: 11.7
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4576,7 +4576,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -4728,7 +4728,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.3, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &547565754
 GameObject:

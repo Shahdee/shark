@@ -25,8 +25,10 @@ public class EntityManager : MonoBehaviour, IInitable
 
         GObject gobj = GetFromPool(oType);
 
-        if (gobj != null)
+        if (gobj != null){
+            gobj.gameObject.SetActive(true);
             return gobj;
+        }
         else{
             GameObject gameObject = null;
 
@@ -50,8 +52,13 @@ public class EntityManager : MonoBehaviour, IInitable
     }
 
     public void ReturnToPool(GObject obj){
+
+        Debug.LogError("ReturnToPool " + obj);
+
         m_ObjectsInPool.Add(obj);
         obj.m_Transform.SetParent(m_TrsPoolParent);
+
+        obj.gameObject.SetActive(false);
     }
 
     GObject GetFromPool(GObject.ObjectType oType){

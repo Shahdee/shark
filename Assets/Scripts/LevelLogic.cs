@@ -126,7 +126,7 @@ public class LevelLogic: IUpdatable
     }
 
     int m_CurrLevelTimeToShow = 0;
-    float c_TimeToAttempt = 30; // sec 
+    public float c_TimeToAttempt = 30; // sec 
 
     public int GetCurrTime(){
         return m_CurrLevelTimeToShow;
