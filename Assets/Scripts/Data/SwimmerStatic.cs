@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mine : GObject
+public class SwimmerStatic : GObject
 {
-   
-   
-
 
 }

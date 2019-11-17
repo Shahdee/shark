@@ -11,18 +11,13 @@ using UnityEngine.Tilemaps;
 public class Level : MonoBehaviour, IInitable
 {
     public Shark m_Shark;
-    public Tilemap m_Tile;
-
-    public TileBase m_TileFloor; 
-    public TileBase m_TileCarpet; 
-    public TileBase m_TileWall; 
-    public TileBase m_TileDoor; 
-    public TileBase m_TileBed; 
-    public TileBase m_TileWardrobe; 
-    public TileBase m_TileTable; 
+    public List<Tilemap> m_Tilemaps;
+    const int c_Tilemap_Border = 0;
+    const int c_Tilemap_Water = 1;
+    public Transform m_TrsLevelObjects;
 
     // all objects on level
-    List<Object> m_Objects = new List<Object>();
+    List<GObject> m_AllEnemies = new List<GObject>();
     MainLogic m_MainLogic;
 
     public void Init(MainLogic logic){
@@ -61,17 +56,90 @@ public class Level : MonoBehaviour, IInitable
         OnLevelGenerate();
     }
 
+    int c_Shark_X = 13;
+    int c_Shark_Y = 13;
+
     void PutShark(){
-        // in the center 
+        m_Shark.Put(c_Shark_X, c_Shark_Y);
+        
         // camera might be here
     }
 
     void GenerateObstacles(){
         // or init random variables for obstacles
+
+        // return objects to buffer 
+        // generate objects for level from buffer 
+        // put obstacles in free slots 
+
+        for (int i=0; i<m_Tilemaps.Count; i++){
+            m_Tilemaps[i].CompressBounds();
+
+            Debug.Log("tilemap "  + m_Tilemaps[i].size);
+        }
+
+        GenerateEnemies();
+    }
+
+    public float m_EnemyProbability = 0.2f;
+    public float m_MineProbability = 0.7f;
+
+    void GenerateEnemies(){
+
+        float enemy = 0;
+        float type = 0;
+
+        GObject entity = null;
+
+        ReturnOldEnemiesToPool();
+
+        // TODO exclude shark cell ! 
+
+        for (int i=0; i<m_Tilemaps[c_Tilemap_Water].size.x; i++){
+            for (int y=0; y<m_Tilemaps[c_Tilemap_Water].size.y; y++){
+
+                if (i == c_Shark_X && y == c_Shark_Y) continue;
+                
+                enemy = UnityEngine.Random.Range(0f, 1f);
+                if (enemy > m_EnemyProbability){
+                    // put enemy in the cell
+
+                    type = UnityEngine.Random.Range(0f, 1f);
+                    if (type > m_MineProbability)
+                    {
+                        // mine 
+                        entity = m_MainLogic.GetEntityManager().GetEntity(GObject.ObjectType.Mine);
+                    }
+                    else{
+                        // swimmer static
+                        entity = m_MainLogic.GetEntityManager().GetEntity(GObject.ObjectType.SwimmerStatic);
+                    }
+
+                    if (entity != null){
+
+                        entity.Put(i, y);
+
+                        entity.m_Transform.SetParent(m_TrsLevelObjects);
+                        m_AllEnemies.Add(entity);
+                    }
+                }
+            }
+        }
+    }
+
+    void ReturnOldEnemiesToPool(){
+        for (int i=0; i<m_AllEnemies.Count; i++){
+            m_MainLogic.GetEntityManager().ReturnToPool(m_AllEnemies[i]);
+        }
+        m_AllEnemies.Clear();
     }
 
     public Shark GetShark(){
         return m_Shark;
+    }
+
+    public Tilemap GetTileMap(){
+        return m_Tilemaps[c_Tilemap_Water];
     }
 
     void MineCollision(Object mine){
