@@ -76,7 +76,7 @@ public class GUILogic : UIObject, IInitable, IUpdatable
     void TimeIsUp(){
         // time is up 
 
-        Debug.Log("time is up");
+        // Debug.Log("time is up");
 
         OpenWindow(WinViewBase.WinType.LevelComplete);
     }
