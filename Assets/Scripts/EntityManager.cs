@@ -53,7 +53,7 @@ public class EntityManager : MonoBehaviour, IInitable
 
     public void ReturnToPool(GObject obj){
 
-        Debug.LogError("ReturnToPool " + obj);
+        // Debug.LogError("ReturnToPool " + obj);
 
         m_ObjectsInPool.Add(obj);
         obj.m_Transform.SetParent(m_TrsPoolParent);

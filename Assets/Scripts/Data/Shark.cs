@@ -65,7 +65,7 @@ public class Shark : GObject
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("enter " + collision.gameObject.name);
+        // Debug.Log("enter " + collision.gameObject.name);
 
         GObject obj = collision.transform.GetComponent<GObject>();
         if (obj == null)

@@ -60,9 +60,10 @@ public class Level : MonoBehaviour, IInitable
     int c_Shark_Y = 13;
 
     void PutShark(){
-        m_Shark.Put(c_Shark_X, c_Shark_Y);
+        int x = m_Tilemaps[c_Tilemap_Water].origin.x +  c_Shark_X;
+        int y = m_Tilemaps[c_Tilemap_Water].origin.y +  c_Shark_Y;
 
-        // camera might be here
+        m_Shark.Put(x, y);
     }
 
     void GenerateObstacles(){
@@ -75,7 +76,7 @@ public class Level : MonoBehaviour, IInitable
         for (int i=0; i<m_Tilemaps.Count; i++){
             m_Tilemaps[i].CompressBounds();
 
-            Debug.Log("tilemap "  + m_Tilemaps[i].size);
+            // Debug.Log("tilemap "  + m_Tilemaps[i].size);
         }
 
         GenerateEnemies();
@@ -93,10 +94,13 @@ public class Level : MonoBehaviour, IInitable
 
         ReturnOldEnemiesToPool();
 
-        // TODO exclude shark cell ! 
+        // Debug.LogError("m_Tilemaps[c_Tilemap_Water].origin " + m_Tilemaps[c_Tilemap_Water].origin);
 
-        for (int i=0; i<m_Tilemaps[c_Tilemap_Water].size.x; i++){
-            for (int y=0; y<m_Tilemaps[c_Tilemap_Water].size.y; y++){
+       int sizeX = m_Tilemaps[c_Tilemap_Water].origin.x +  m_Tilemaps[c_Tilemap_Water].size.x;
+       int sizeY = m_Tilemaps[c_Tilemap_Water].origin.y +  m_Tilemaps[c_Tilemap_Water].size.y;
+
+        for (int i=m_Tilemaps[c_Tilemap_Water].origin.x; i<sizeX; i++){
+            for (int y=m_Tilemaps[c_Tilemap_Water].origin.y; y<sizeY; y++){
 
                 if (i == c_Shark_X && y == c_Shark_Y) continue;
                 

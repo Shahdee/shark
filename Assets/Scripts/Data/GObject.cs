@@ -19,7 +19,7 @@ public class GObject : MonoBehaviour, IInitable
         private set{_Transform = value;}
     }
 
-    public BoxCollider2D m_Collider;
+    public Collider2D m_Collider;
 
     public enum ObjectType{
         Shark,
@@ -49,8 +49,8 @@ public class GObject : MonoBehaviour, IInitable
 
         m_Position = MainLogic.GetMainLogic().GetLevel().GetTileMap().GetCellCenterWorld(m_MapPosition);
 
-        Debug.Log("m_MapPosition " + m_MapPosition);
-        Debug.Log("m_Position " + m_Position);
+        // Debug.Log("m_MapPosition " + m_MapPosition);
+        // Debug.Log("m_Position " + m_Position);
 
         m_Transform.position = m_Position;
     }
