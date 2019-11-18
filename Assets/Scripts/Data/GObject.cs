@@ -4,7 +4,7 @@ using UnityEngine;
 
 
     
-public class GObject : MonoBehaviour, IInitable
+public class GObject : MonoBehaviour, IInitable, IUpdatable
 {
     Transform _Transform;
     public Transform m_Transform
@@ -55,11 +55,15 @@ public class GObject : MonoBehaviour, IInitable
         m_Transform.position = m_Position;
     }
 
+    public void UpdateMe(float deltaTime){
+        
+    }
+
     void performSwim(){
 
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
 
         // Debug.Log("OnTriggerEnter2D mine " + collision.gameObject.name);

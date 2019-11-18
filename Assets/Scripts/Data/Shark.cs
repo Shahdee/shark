@@ -63,7 +63,7 @@ public class Shark : GObject
 
 #endregion
 
-    void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
         // Debug.Log("enter " + collision.gameObject.name);
 
